@@ -26,10 +26,10 @@
         </p>
     </abstract>
     <deliverables>
-        <deliverable path="pr.xml">pr.xml</deliverable>
-        <deliverable path="pr.xsl">pr.xsl</deliverable>
-        <deliverable path="pr.html">pr.html</deliverable>
-        <deliverable path="arq.xls">arq.xls</deliverable>
-        <deliverable path="index.html">index arqueosítios</deliverable>
+        <deliverable path="./pr.xml">pr.xml</deliverable>
+        <deliverable path="./pr.xsl">pr.xsl</deliverable>
+        <deliverable path="./pr.html">pr.html</deliverable>
+        <deliverable path="./arq.xsl">arq.xls</deliverable>
+        <deliverable path="./html/index.html">index arqueosítios</deliverable>
     </deliverables>
 </pr>
