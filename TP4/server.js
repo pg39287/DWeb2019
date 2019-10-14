@@ -62,8 +62,4 @@ http.createServer((request, response) => {
     }
 }).listen(PORT_NUMBER);
 
-function routeHandler(response, path) {
-
-}
-
 console.log('Server running on port: ' + PORT_NUMBER + '....');
