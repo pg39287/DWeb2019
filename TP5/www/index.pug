@@ -1,0 +1,13 @@
+extends layout
+block content
+    .container-fluid
+        header 
+            h1 Gestor de Tarefas
+            form
+                .form-group
+                    label Description
+                    textarea.form-control(name="comment" form="" placeholder='Add a description here...')
+                button.btn.btn-primary(type='submit') Submit
+        footer
+            address Copyright, Francisco Saraiva
+        hr
