@@ -1,5 +1,5 @@
 ## Trabalhos de Casa
-## "Desenvolvimento e Aplicações Web"
+## "Desenvolvimento de Aplicações Web"
 ##### 2019/2019, Universidade do Uminho
 
  - **TP1 - [(Página Web sobre a Iguana)](https://github.com/pg39287/DWeb2019/tree/master/TP1)** *(17/9/19 - 24/9/19)*
