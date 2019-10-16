@@ -28,6 +28,15 @@ exports.getView = (location, response) => {
     response.end();
 }
 
+exports.getErrorView = (location, response, error) => {
+    response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
+    response.write(pug.renderFile(
+        location,
+        { error_description: error }
+    ));
+    response.end();
+}
+
 exports.getFavicon = (location, response) => {
     response.writeHead(200, { 'Content-Type': 'text/html' });
     fs.readFile(location, (err, data) => {

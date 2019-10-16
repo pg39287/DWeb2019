@@ -37,6 +37,9 @@ var server = http.createServer((request, response) => {
                 utilities.getFavicon(SERVER_CONFIGURATION.favicon, response);
                 return;
             }
+            // error pages outside of the avaialable views
+            utilities.getErrorView('./www/error.pug', response, '404 Not found...');
+            console.log('Fell in 404 view')
             break;
         case "POST": //process POST request
             //task
@@ -46,7 +49,7 @@ var server = http.createServer((request, response) => {
             //$('#myModal').modal('hide')
             break;
         default: //process the other request types for errors
-            utilities.giveResponse(200, 'text/html')
+            utilities.getView('./www/error.pug', response);
             break;
     }
 });
