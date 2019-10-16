@@ -4,6 +4,7 @@
 var url = require('url');
 var pug = require('pug');
 var fs = require('fs');
+var jsonfile = require('jsonfile');
 
 /**
  * Requests
@@ -18,13 +19,34 @@ exports.getRequestMethod = (request) => {
     return method;
 }
 
+exports.readDatabase = (database, callback) => {
+    console.log('about to read it...')
+    console.log(database)
+
+    jsonfile.readFile(database, (err, task_list) => {
+        console.log('read it...')
+        if (!err) {
+            console.log('returned it...')
+            console.log(task_list)
+            callback(task_list);
+        }
+        console.log('it is empty...')
+        return [];
+    })
+}
+
 /**
  * Responses
  */
 
-exports.getView = (location, response) => {
+//GET
+exports.getView = (location, response, data) => {
+    console.log('DATA: ' + data);
     response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
-    response.write(pug.renderFile(location));
+    if (data != null) //if there's data being passed we pass it to the view
+        response.write(pug.renderFile(location, { task_list: data }));
+    else //if not we load only the view
+        response.write(pug.renderFile(location));
     response.end();
 }
 
@@ -48,6 +70,7 @@ exports.getFavicon = (location, response) => {
     })
 }
 
+//POST
 exports.postTask = (request, response) => {
     response.writeHead(200, { 'Content-Type': 'text/html' });
     response.write('<script>setTimeout(function () { window.location.href = "http://localhost:7777/"; }, 1000);</script>');

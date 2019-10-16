@@ -28,7 +28,10 @@ var server = http.createServer((request, response) => {
             //index
             if (url == '/') {
                 console.log('Fell in index.html');
-                utilities.getView('./www/index.pug', response);
+                utilities.readDatabase(SERVER_CONFIGURATION.database, (task_list) => {
+                    console.log('read the database...')
+                    utilities.getView('./www/index.pug', response, task_list);
+                });
                 return;
             }
             //favicon
@@ -46,10 +49,11 @@ var server = http.createServer((request, response) => {
             if (url == '/task') {
                 utilities.postTask(request, response);
             }
-            //$('#myModal').modal('hide')
             break;
         default: //process the other request types for errors
-            utilities.getView('./www/error.pug', response);
+            response.writeHead(200, { 'Content-Type': 'text/html' });
+            response.write('<p>Error</p>');
+            response.end();
             break;
     }
 });
