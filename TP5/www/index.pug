@@ -32,13 +32,13 @@ block content
                 form(action='/task' method='POST')
                   .form-group
                     label.font-weight-bold(for='title') Title: 
-                    input#title.form-control(type='text' placeholder='Add a title to the task...')
+                    input#title.form-control(type='text' name='title' placeholder='Add a title to the task...')
                   .form-group
                     label.font-weight-bold(for='description') Description: 
-                    textarea#description.form-control(rows='3' placeholder="Add a description to the task...")
+                    textarea#description.form-control(rows='3' name='description' placeholder="Add a description to the task...")
                   .form-group
                     label.font-weight-bold(for='date') Date: 
-                    input#date.form-control(type='date')
+                    input#date.form-control(type='date' name='date')
                   .form-group
                     button.btn.btn-outline-danger.form-control(type='submit') Submit               
               .modal-footer.bg-danger.font-weight-bold

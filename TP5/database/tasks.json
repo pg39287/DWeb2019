@@ -1,12 +1,1 @@
-[
-    {
-        "title": "TP5",
-        "description": "Fazer trabalhos de casa para DWeb2019",
-        "date": "22/10/2019"
-    },
-    {
-        "title": "Projeto de Arquitetura",
-        "description": "Fazer 1º parte do projeto sobre trades",
-        "date": "25/10/2019"
-    }
-]
+[{"title":"TP5","description":"Fazer trabalhos de casa para DWeb2019","date":"22/10/2019"},{"title":"Projeto de Arquitetura","description":"Fazer 1º parte do projeto sobre trades","date":"25/10/2019"},{"title":"ASDF","description":"aaaa","date":"2019-10-17"},{"title":"TESTE","description":"taaaaaa","date":"2019-10-17"}]

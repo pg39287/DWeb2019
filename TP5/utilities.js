@@ -5,6 +5,8 @@ var url = require('url');
 var pug = require('pug');
 var fs = require('fs');
 var jsonfile = require('jsonfile');
+var { parse } = require('querystring');
+
 
 /**
  * Requests
@@ -28,10 +30,10 @@ exports.readDatabase = (database, callback) => {
         if (!err) {
             console.log('returned it...')
             console.log(task_list)
-            callback(task_list);
+            callback(err, task_list);
         }
         console.log('it is empty...')
-        return [];
+        return (err, []);
     })
 }
 
@@ -71,9 +73,37 @@ exports.getFavicon = (location, response) => {
 }
 
 //POST
-exports.postTask = (request, response) => {
-    response.writeHead(200, { 'Content-Type': 'text/html' });
-    response.write('<script>setTimeout(function () { window.location.href = "http://localhost:7777/"; }, 1000);</script>');
-    response.end();
+exports.postTask = (request, callback) => {
+    //urlencoded format (parse the data information from the form)
+    if (request.headers['content-type'] == 'application/x-www-form-urlencoded') {
+        let body = '';
+        request.on('data', block => {
+            body += block.toString();
+        });
+        request.on('end', () => {
+            let data = parse(body);
+            console.log(data);
+            callback(data);
+        })
+    }
+}
+
+exports.saveTaskDatabase = (database, response, task, port) => {
+    jsonfile.readFile(database, (err, task_list) => {
+        if (!err) {
+            task_list.push(task);
+            jsonfile.writeFile(database, task_list, err => {
+                if (err)
+                    console.log(err);
+                else {
+                    //redirect to the index
+                    console.log('Registo gravado com sucesso!');
+                    response.writeHead(200, { 'Content-Type': 'text/html' });
+                    response.write('<script>setTimeout(function () { window.location.href = "http://localhost:' + port + '/"; }, 2000);</script>');
+                    response.end();
+                }
+            });
+        }
+    })
 }
 

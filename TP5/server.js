@@ -3,7 +3,6 @@
  *******************/
 var http = require('http');
 var jsonfile = require('jsonfile');
-var { parse } = require('querystring');
 
 var utilities = require('./utilities');
 
@@ -28,9 +27,10 @@ var server = http.createServer((request, response) => {
             //index
             if (url == '/') {
                 console.log('Fell in index.html');
-                utilities.readDatabase(SERVER_CONFIGURATION.database, (task_list) => {
+                utilities.readDatabase(SERVER_CONFIGURATION.database, (err, task_list) => {
                     console.log('read the database...')
-                    utilities.getView('./www/index.pug', response, task_list);
+                    if (!err)
+                        utilities.getView('./www/index.pug', response, task_list);
                 });
                 return;
             }
@@ -47,7 +47,14 @@ var server = http.createServer((request, response) => {
         case "POST": //process POST request
             //task
             if (url == '/task') {
-                utilities.postTask(request, response);
+                //this is an async hell
+                utilities.postTask(request, data => {
+                    utilities.saveTaskDatabase(
+                        SERVER_CONFIGURATION.database,
+                        response,
+                        data,
+                        SERVER_CONFIGURATION.port);
+                });
             }
             break;
         default: //process the other request types for errors
