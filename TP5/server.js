@@ -2,8 +2,6 @@
  * Modules
  *******************/
 var http = require('http');
-var pug = require('pug');
-var fs = require('fs');
 var jsonfile = require('jsonfile');
 var { parse } = require('querystring');
 
@@ -13,11 +11,14 @@ var utilities = require('./utilities');
  * Config Variables
  *******************/
 var CONFIG_FILE = 'serverConfig.json';
-//
-var DATABASE;
-var PORT = '7777';
+var SERVER_CONFIGURATION = jsonfile.readFileSync(CONFIG_FILE); //readFileSync is important to read the file before creating the server
+console.log('-- Server running --\n'
+    + 'Port: ' + SERVER_CONFIGURATION.port + '\n'
+    + 'Database: ' + SERVER_CONFIGURATION.database + '\n'
+    + 'Favicon: ' + SERVER_CONFIGURATION.favicon);
 
 var server = http.createServer((request, response) => {
+
     let url = utilities.getUrlPathname(request);
     console.log(url);
     let method = utilities.getRequestMethod(request);
@@ -27,35 +28,26 @@ var server = http.createServer((request, response) => {
             //index
             if (url == '/') {
                 console.log('Fell in index.html');
-                response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
-                response.write(pug.renderFile('./www/index.pug'));
-                response.end();
+                utilities.getView('./www/index.pug', response);
                 return;
             }
             //favicon
-            if (url == 'favicon.ico') {
+            if (url == '/favicon.ico') {
                 console.log('Fell in favicon request');
-                response.writeHead(200, { 'Content-Type': 'text/html' });
-                fs.readFile('./www/images/favicon.ico', (err, data) => {
-                    if (!err)
-                        response.write(data);
-                    else
-                        response.write('<p>Erro a carregar favicon: ' + err + '</p>');
-                    response.end();
-                })
+                utilities.getFavicon(SERVER_CONFIGURATION.favicon, response);
                 return;
             }
-            //index
             break;
         case "POST": //process POST request
             //task
+            if (url == '/task') {
+                utilities.postTask(request, response);
+            }
+            //$('#myModal').modal('hide')
             break;
         default: //process the other request types for errors
             utilities.giveResponse(200, 'text/html')
             break;
     }
-
 });
-
-server.listen(PORT);
-console.log('Server running on port: ' + PORT + '...');
+server.listen(SERVER_CONFIGURATION.port);

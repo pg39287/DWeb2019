@@ -1,0 +1,17 @@
+{
+  "name": "tp5",
+  "version": "1.0.0",
+  "description": "Homework for DWeb2019",
+  "main": "server.js",
+  "dependencies": {
+    "jsonfile": "^5.0.0",
+    "nodemon": "^1.19.4",
+    "pug": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "francisco saraiva",
+  "license": "ISC"
+}
