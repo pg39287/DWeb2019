@@ -1,5 +1,5 @@
 {
     "favicon": "./www/images/favicon.ico",
-    "database": "database/tasks.json",
+    "database": "./database/tasks.json",
     "port": "7777"
 }

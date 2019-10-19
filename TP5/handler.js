@@ -1,6 +1,7 @@
 /*******************
  * Modules
  *******************/
+var http = require('http');
 var url = require('url');
 var pug = require('pug');
 var fs = require('fs');
@@ -88,21 +89,64 @@ exports.postTask = (request, callback) => {
     }
 }
 
-exports.saveTaskDatabase = (database, response, task, port) => {
+exports.saveTaskDatabase = (database, port, response, task) => {
     jsonfile.readFile(database, (err, task_list) => {
         if (!err) {
+            //rearange the ids to organize 
+            task_list.filter((task, index) => {
+                task.id = index;
+            })
+            //push the new task into the array
             task_list.push(task);
+            //we set a new id based on the length of the task_list so it's all ordered and identified
+            task_list[task_list.length - 1].id = task_list.length - 1;
+
             jsonfile.writeFile(database, task_list, err => {
                 if (err)
                     console.log(err);
                 else {
                     //redirect to the index
                     console.log('Registo gravado com sucesso!');
-                    response.writeHead(200, { 'Content-Type': 'text/html' });
-                    response.write('<script>setTimeout(function () { window.location.href = "http://localhost:' + port + '/"; }, 2000);</script>');
+                    response.writeHead(301,
+                        { Location: 'http://localhost:' + port }
+                    );
                     response.end();
                 }
             });
+        }
+    })
+}
+
+//DELETE
+exports.deleteTask = (request, callback) => {
+    let body = '';
+    request.on('data', block => {
+        body += block.toString();
+    })
+    request.on('end', () => {
+        let data = JSON.parse(body);
+        console.log('JSON: ' + body);
+        callback(data);
+    })
+}
+
+exports.deleteTaskDatabase = (database, port, response, data) => {
+    jsonfile.readFile(database, (err, task_list) => {
+        if (!err) {
+            //filter out the task we want to delete via the id
+            task_list = task_list.filter((task) => { return task.id != data.id });
+            console.log('ID-> ' + data.id);
+
+            jsonfile.writeFile(database, task_list, err => {
+                if (err)
+                    console.log(err);
+                else {
+                    //redirect to the index
+                    console.log('Registo apagado com sucesso!');
+                    response.writeHead(200, { 'Content-Type': 'text/html' });
+                    response.end();
+                }
+            })
         }
     })
 }

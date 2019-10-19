@@ -4,19 +4,24 @@ block content
         header.bg-danger.rounded.font-weight-bold.text-center.p-2
             h1.text-white Task Manager
         content
-            button.btn.btn-outline-danger.btn-lg.btn-block.text-center.mt-2.mb-2(type='button' data-toggle='modal' data-target='#createTaskModal') Adicionar Tarefa
+            button.btn.btn-outline-danger.btn-lg.btn-block.text-center.mt-2.mb-2(type='button' data-toggle='modal' data-target='#createTaskModal') Add Task
             table.table.table-hover
                 thead
                     tr
                         th(scope='col') Title
                         th(scope='col') Description
                         th(scope='col') Date
+                        th(scope='col')
                 tbody
                     each task in task_list
                         tr
                           td= task.title
                           td= task.description
                           td= task.date
+                          td
+                            a
+                              i.material-icons(onclick='deleteTask('+task.id+')') delete
+
         
         footer.bg-danger.rounded.text-center.p-2
             h5.text-white Francisco Saraiva - PG39287
@@ -29,7 +34,7 @@ block content
                 button.close.text-white(type='button' data-dismiss='modal' aria-label='Close')
                   span(aria-hidden='true') &times;
               .modal-body
-                form(action='/task' method='POST')
+                form#taskForm.needs-validation(action='/task' method='POST' onsubmit="return validateForm()")
                   .form-group
                     label.font-weight-bold(for='title') Title: 
                     input#title.form-control(type='text' name='title' placeholder='Add a title to the task...')
@@ -43,3 +48,4 @@ block content
                     button.btn.btn-outline-danger.form-control(type='submit') Submit               
               .modal-footer.bg-danger.font-weight-bold
                 button.btn.btn-outline-light.font-weight-bold(type='button' data-dismiss='modal') Close
+
