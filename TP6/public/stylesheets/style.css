@@ -1,0 +1,39 @@
+body {
+  background-image: url("/images/bg.jpg");
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.homepage-h1 {
+  font-size: 45pt;
+  border: 10px;
+  border-style: outset;
+  border-radius: 100pt;
+  border-color: saddlebrown;
+  background:sienna;
+  color:tan;
+  width: fit-content;
+  padding: 10px;
+  margin:auto;
+}
+
+.link-button {
+  width:fit-content; 
+  height:auto; 
+  background: saddlebrown;
+  border: 5px;
+  border-style: outset;
+  border-radius: 10pt;
+  border-color: saddlebrown;
+  color:tan;
+  font-size: 25pt;
+  font-weight: bold;
+}
+.link-button:hover{
+  background: chocolate;
+}
+
+.error-div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 13%;
+}
