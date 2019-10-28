@@ -139,30 +139,35 @@ router.put('/song', (req, res) => {
  ****************************************/
 
 //delete song
-router.delete('/song', (req, res) => {
+router.delete('/song/:id', (req, res) => {
+  console.log(req.params.id)
+  var deleteID = req.params.id; //id of the song
 
-  /*
-  let reqID = req.params.id; //id of the song
   jsonfile.readFile(myBD, (erro, data) => {
+    var removedIndex = -1;
     if (!erro) {
       data.forEach((song, index) => {
-        if (song.id == reqID) {
-          var removedIndex = index; //get index
+        if (song.id == deleteID) {
+          removedIndex = index; //get index
         }
       });
 
-      var removed = data.splice(removedIndex, 1);
-      console.log("DELETED:" + removed);
-      //save in db
-      jsonfile.writeFile(myBD, data, erro => {
-        res.redirect('/');
-      })
+      if (removedIndex != -1) {
+        var removed = data.splice(removedIndex, 1);
+        console.log("DELETED: ");
+        console.log(removed);
+        //save in db
+        jsonfile.writeFile(myBD, data, erro => {
+          res.redirect(200, '/');
+        })
+      } else {
+        res.render('error', { error: 'Não encontrada canção para apagar...' });
+      }
     }
     else {
       res.render('error', { error: erro })
     }
-  })*/
-  console.log('DELETE -> ' + req.body)
+  })
 })
 
 module.exports = router;
