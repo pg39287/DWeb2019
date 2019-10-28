@@ -96,7 +96,7 @@ router.get('/regions', (req, res) => {
       res.render('error', { error: erro })
     }
   })
-});
+})
 
 router.get('/editsong', (req, res) => {
   res.render('songform', {});
@@ -131,6 +131,8 @@ router.post('/song', (req, res) => {
 
 //update song
 router.put('/song', (req, res) => {
+  var body = req.body;
+
   res.render('editsong', {});
 })
 
