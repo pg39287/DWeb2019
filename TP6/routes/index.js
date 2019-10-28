@@ -98,10 +98,6 @@ router.get('/regions', (req, res) => {
   })
 })
 
-router.get('/editsong', (req, res) => {
-  res.render('songform', {});
-})
-
 /****************************************
  * POST
  ****************************************/
@@ -130,10 +126,38 @@ router.post('/song', (req, res) => {
  ****************************************/
 
 //update song
-router.put('/song', (req, res) => {
+router.post('/updatesong', (req, res) => {
   var body = req.body;
+  let reqID = body.id; //id of the song
+  console.log(body);
+  console.log(reqID);
 
-  res.render('editsong', {});
+  jsonfile.readFile(myBD, (erro, data) => {
+    if (!erro) {
+      data.forEach(song => {
+        if (song.id == reqID) {
+          song.tit = body.tit;
+          song.prov = body.prov;
+          song.local = body.local;
+          song.musico = body.musico;
+          song.file['#text'] = body.file;
+          song.duracao = body.duracao;
+        }
+      });
+
+      jsonfile.writeFile(myBD, data, erro => {
+        if (erro) console.log(erro)
+        else {
+          console.log('Registo atualizado com sucesso.')
+          res.redirect('/');
+        }
+      })
+
+    }
+    else {
+      res.render('error', { error: erro })
+    }
+  })
 })
 
 /****************************************
