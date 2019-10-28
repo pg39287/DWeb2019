@@ -1,8 +1,9 @@
-function ArqSong(provincia, local, titulo, musico, file, duracao) {
-    this.provincia = provincia;
+function ArqSong(prov, local, tit, musico, obs, file, duracao) {
+    this.prov = prov;
     this.local = local;
-    this.titulo = titulo;
+    this.tit = tit;
     this.musico = musico;
+    this.obs = obs;
     this.file = file;
     this.duracao = duracao;
 }

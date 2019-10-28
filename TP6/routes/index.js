@@ -1,41 +1,168 @@
 var express = require('express');
 var router = express.Router();
+var jsonfile = require('jsonfile');
+const nanoid = require('nanoid');
 
-/**
+var myBD = __dirname + "/../database/database.json"
+
+
+/****************************************
  * GETS
- */
+ ****************************************/
 
 //Get homepage
-router.get('/', (req, res, next) => {
-  res.render('index');
+router.get('/', (req, res) => {
+  //we run the database and give new IDs to the objects
+  jsonfile.readFile(myBD, (erro, data) => {
+    if (!erro) {
+      data.forEach(song => {
+        song.id = nanoid();
+      });
+      //save in db
+      jsonfile.writeFile(myBD, data, erro => {
+        if (erro) {
+          res.render('index', { count: 0 });
+        }
+        else {
+          console.log('IDs generated successfully')
+          res.render('index', { count: data.length });
+        }
+      })
+    }
+  })
 });
 
-//Get list of regions
-router.get('/regions', (req, res, next) => {
-  res.render('regions');
-});
+//Get All songs
+router.get('/songs', (req, res) => {
+  let query = req.query;
+  console.log(query)
+  jsonfile.readFile(myBD, (erro, data) => {
+    if (!erro) {
 
-//Get specific song page
-router.get('/song/:id', (req, res, next) => {
-  res.render('song');
+      if (query != {}) {
+        if (query.prov) { //filter province
+          data = data.filter(song => {
+            return song.prov.includes(query.prov)
+          });
+        }
+      }
+
+      let response_object = {};
+      response_object.cancoes = data;
+      response_object.prov = (query.prov) ? query.prov : "";
+
+      res.render('songs', response_object);
+    }
+    else {
+      res.render('error', { error: erro })
+    }
+  })
 })
 
+//Get specific song page
+router.get('/song/:id', (req, res) => {
+  let reqID = req.params.id; //id of the song
+  jsonfile.readFile(myBD, (erro, data) => {
+    if (!erro) {
+      data = data.filter(song => song.id == reqID);
+      res.render('song', { cancao: data[0] })
+    }
+    else {
+      res.render('error', { error: erro })
+    }
+  })
+})
+
+//Get list of regions
+router.get('/regions', (req, res) => {
+  let regions = [];
+  jsonfile.readFile(myBD, (erro, data) => {
+    if (!erro) {
+      //fill regions
+      data.forEach(song => {
+        regions.push(song.prov);
+      });
+      //filter regions
+      console.log(regions);
+      console.log('---------------')
+      regions = regions.filter((reg, pos) => {
+        return regions.indexOf(reg) == pos;
+      })
+      console.log(regions);
+
+      res.render('regions', { regioes: regions })
+    }
+    else {
+      res.render('error', { error: erro })
+    }
+  })
+});
+
 //Get song form page
-router.get('/addsong', (req, res, next) => {
+router.get('/addsong', (req, res) => {
   res.render('addsong');
 })
 
-/**
- * POSTS
- */
+/****************************************
+ * POST
+ ****************************************/
 
 //post new song
+router.post('/song', () => {
+  jsonfile.readFile(myBD, (erro, data) => {
+    if (!erro) {
+      song = req.body;
+      song.id = nanoid();
+      data.push(req.body)
+      jsonfile.writeFile(myBD, data, erro => {
+        if (erro) console.log(erro)
+        else {
+          res.redirect('/song/' + song.id);
+          console.log('Registo gravado com sucesso.')
+        }
+      })
+    }
+  })
+})
 
-/**
-* DELETE
-*/
+/****************************************
+ * UPDATE
+ ****************************************/
+
+//update song
+router.put('/song', (req, res) => {
+
+})
+
+/****************************************
+ * DELETE
+ ****************************************/
 
 //delete song
+router.delete('/song', (req, res) => {
 
+  /*
+  let reqID = req.params.id; //id of the song
+  jsonfile.readFile(myBD, (erro, data) => {
+    if (!erro) {
+      data.forEach((song, index) => {
+        if (song.id == reqID) {
+          var removedIndex = index; //get index
+        }
+      });
+
+      var removed = data.splice(removedIndex, 1);
+      console.log("DELETED:" + removed);
+      //save in db
+      jsonfile.writeFile(myBD, data, erro => {
+        res.redirect('/');
+      })
+    }
+    else {
+      res.render('error', { error: erro })
+    }
+  })*/
+  console.log('DELETE -> ' + req.body)
+})
 
 module.exports = router;
