@@ -97,11 +97,21 @@ body {
   background: saddlebrown !important;
   color: chocolate;
 }
-
 .card-body{
   background: tan;
 }
-
 .card-body .btn{
   background: salmon;
+}
+
+.modal-header {
+  background: saddlebrown !important;
+  color: chocolate;
+}
+.modal-body {
+  background: tan;
+}
+.modal-footer{
+  background: saddlebrown;
+  color:chocolate;
 }

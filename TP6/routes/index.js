@@ -98,9 +98,8 @@ router.get('/regions', (req, res) => {
   })
 });
 
-//Get song form page
-router.get('/addsong', (req, res) => {
-  res.render('addsong');
+router.get('/editsong', (req, res) => {
+  res.render('songform', {});
 })
 
 /****************************************
@@ -108,17 +107,18 @@ router.get('/addsong', (req, res) => {
  ****************************************/
 
 //post new song
-router.post('/song', () => {
+router.post('/song', (req, res) => {
+  var body = req.body;
+  body.id = nanoid();
+
   jsonfile.readFile(myBD, (erro, data) => {
     if (!erro) {
-      song = req.body;
-      song.id = nanoid();
-      data.push(req.body)
+      data.push(body)
       jsonfile.writeFile(myBD, data, erro => {
         if (erro) console.log(erro)
         else {
-          res.redirect('/song/' + song.id);
           console.log('Registo gravado com sucesso.')
+          res.redirect('/');
         }
       })
     }
@@ -131,7 +131,7 @@ router.post('/song', () => {
 
 //update song
 router.put('/song', (req, res) => {
-
+  res.render('editsong', {});
 })
 
 /****************************************
