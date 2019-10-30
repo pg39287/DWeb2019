@@ -42,13 +42,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', indexRouter); //homepage
 //app.use('/actors', actorsRouter) //actors
 //app.use('/genres', genresRouter) //genres list to group movies
 app.use('/movies', moviesRouter); //movies
 //api
 app.use('/api-movies', apiRouter);
-
 
 
 // catch 404 and forward to error handler

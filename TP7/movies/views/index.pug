@@ -2,8 +2,8 @@ extends layout
 block content
   h1 Movie Database
   p Number of movies in the database: #{count}
-  ul
-    li
+  ul.list-group.list-group-flush
+    li.list-group-item
       a(href="/genres") Genres
-    li
+    li.list-group-item
       a(href="/actors") Actors

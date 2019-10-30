@@ -1,0 +1,9 @@
+extends ../layout
+block content
+  h1 Movies
+  ul.list-group.list-group-flush
+    each movie in movies
+      li.list-group-item
+        a(href="/movies/"+movie._id) #{movie.title} - #{movie.year}
+        input(type="button", value="Edit").ml-2.btn.btn-outline-primary
+        input(type="button", value="Delete").ml-2.btn.btn-outline-primary
