@@ -2,6 +2,7 @@ var Movie = require('../models/Movie')
 
 const Movies = module.exports;
 
+//works
 Movies.showAll = () => {
     return Movie
         .find()
@@ -9,16 +10,35 @@ Movies.showAll = () => {
         .exec()
 }
 
+//works
 Movies.show = id => {
     return Movie
         .findOne({ _id: id })
         .exec()
 }
 
+//works
+Movies.insert = body => {
+    return Movie
+        .create(body)
+}
+
+//works
+Movies.update = (id, body) => {
+    let idQuery = { _id: id };
+    return Movie
+        .findOneAndUpdate(idQuery, body, { new: true })
+}
+
+//works
+Movies.delete = id => {
+    return Movie
+        .deleteOne({ _id: id })
+}
+
 Movies.count = () => {
     return Movie
         .countDocuments()
-        .exec()
 }
 
 Movies.project = fields => {

@@ -20,16 +20,21 @@ mongoose.connect('mongodb://127.0.0.1:27017/tp7', { useNewUrlParser: true, useUn
 /****************
  * ROUTERS
  ****************/
-var indexRouter = require('./routes/index');
-var moviesRouter = require('./routes/movies');
-var apiRouter = require('./routes/api');
+var indexRouter = require('./routes/indexRouter');
+var moviesRouter = require('./routes/moviesRouter');
+var apiRouter = require('./routes/apiRouter');
 
 /****************
  * MIDDLEWARES
  ****************/
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', [
+  path.join(__dirname, 'views'),
+  path.join(__dirname, 'views/actors'),
+  path.join(__dirname, 'views/genres'),
+  path.join(__dirname, 'views/movies'),
+]);
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
@@ -37,8 +42,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/movies', moviesRouter);
+app.use('/', indexRouter); //homepage
+//app.use('/actors', actorsRouter) //actors
+//app.use('/genres', genresRouter) //genres list to group movies
+app.use('/movies', moviesRouter); //movies
+//api
 app.use('/api-movies', apiRouter);
 
 

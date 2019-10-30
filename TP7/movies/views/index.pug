@@ -1,5 +1,9 @@
 extends layout
-
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Movie Database
+  p Number of movies in the database: #{count}
+  ul
+    li
+      a(href="/genres") Genres
+    li
+      a(href="/actors") Actors
