@@ -3,18 +3,24 @@ var Movie = require('../models/Movie')
 const Movies = module.exports;
 
 //works
-Movies.showAll = () => {
-    return Movie
-        .find()
-        .sort({ title: 1 })
-        .exec()
+Movies.showAll = title => {
+    if (title == "" || title == undefined) {
+        console.log('TITLE EMPTY')
+        return Movie
+            .find()
+    }
+    else {
+        let regex = new RegExp(title, 'i')
+        console.log('TITLE NOT EMPTY')
+        return Movie
+            .find({ title: regex })
+    }
 }
 
 //works
 Movies.show = id => {
     return Movie
         .findOne({ _id: id })
-        .exec()
 }
 
 //works
