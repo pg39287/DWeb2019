@@ -2,6 +2,24 @@
 ### API para prémios Nobel
 ### Exercício 1 da seguinte [ficha](http://www4.di.uminho.pt/~jcr/AULAS/didac/RepFichas/site/fichas/dweb2019-e2.html)
 
+>Criar um servidor nodejs que dê suporte à seguinte API de dados (note que não é necessário qualquer interface web)
+
+### Rotas
+
+|Request|Route|Description|
+|:--|:--|:--|
+|GET |/api/prizes | Devolve a lista de prémios apenas com os campos "year" e "category"
+|GET| /api/prizes/:id | Devolve a informação completa de um prémio
+|GET |/api/categories | Devolve a lista de categorias, sem repetições
+|GET |/api/prizes?categoria=YYY | Devolve a lista de prémios que tenham o campo "category" com o valor "YYY"
+|GET |/api/prizes?category=YYY&date=AAAA | Devolve a lista de prémios que tenham o campo "category" com o valor "YYY" e o campo "year" com um valor superior a "AAAA"
+|GET |/api/laureates | Devolve uma lista ordenada alfabeticamente por nome dos laureados com os campos correspondentes ao nome, ano do prémio e categoria.
+
+
+
+
+
+
 ## Instruções:
 
 Importar o ficheiro prize.json para o MongoDB com o seguinte comando:
