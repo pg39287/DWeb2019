@@ -6,8 +6,13 @@ var APIResponse = require('../models/apiResponse');
 /******************
  * GET
  ******************/
+//work
 router.get('/prizes', (req, res) => {
-    Prize.getPrizes()
+
+    let category = req.query.category;
+    let date = req.query.date;
+
+    Prize.getPrizes(category, date)
         .then(data => {
             res.status(200)
             res.jsonp(new APIResponse({
@@ -27,15 +32,51 @@ router.get('/prizes', (req, res) => {
             res.jsonp(json)
         })
 })
-
-router.get('/prizes/:id', (req, res) => { })
-
-router.get('/categories', (req, res) => { })
-
-router.get('/prizes?category=YYY', (req, res) => { })
-
-router.get('/prizes?category=YYY&date=AAAA', (req, res) => { })
-
+//work
+router.get('/prizes/:id', (req, res) => {
+    Prize.getPrize(req.params.id)
+        .then(data => {
+            res.status(200)
+            res.jsonp(new APIResponse({
+                request: "Get prize with id: " + req.params.id,
+                message: "Prize retrieved",
+                status: 200
+            }, data));
+        })
+        .catch(error => {
+            let json = new APIResponse({
+                request: "Get prize with id: " + req.params.id,
+                message: "An error occured in the database",
+                status: 500,
+            }, []);
+            json.Request.Error = error;
+            res.status(500)
+            res.jsonp(json)
+        })
+})
+//semi work
+router.get('/categories', (req, res) => {
+    Prize.getCategories()
+        .then(data => {
+            res.status(200)
+            res.jsonp(new APIResponse({
+                request: "Get all categories",
+                message: "Categories retrieved",
+                status: 200
+            }, data));
+        })
+        .catch(error => {
+            let json = new APIResponse({
+                request: "Get all categories",
+                message: "An error occured in the database",
+                status: 500,
+            }, []);
+            json.Request.Error = error;
+            res.status(500)
+            res.jsonp(json)
+        })
+})
+//not implemented
 router.get('/laureates', (req, res) => { })
 
 module.exports = router;
