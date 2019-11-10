@@ -25,9 +25,27 @@ Prizes.getPrize = (id) => {
     return Prize.findOne({ _id: id });
 }
 
+//work
 Prizes.getCategories = () => {
+    return Prize.collection.distinct('category')
+}
+
+//work
+Prizes.getLaureates = () => {
     return Prize.aggregate([
-        { $unwind: "$category" },
-        { $group: { _id: "category", } }
-    ])
+        { $unwind: "$laureates" },
+        {
+            $group: {
+                _id: "$laureates.id",
+                name: { $first: "$laureates.firstname" },
+                surname: { $first: "$laureates.surname" },
+                nobels: {
+                    $push: {
+                        year: "$year",
+                        category: "$category"
+                    }
+                }
+            }
+        }
+    ]).sort({ name: true, surname: true });
 }

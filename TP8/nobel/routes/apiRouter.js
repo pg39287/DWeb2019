@@ -77,6 +77,26 @@ router.get('/categories', (req, res) => {
         })
 })
 //not implemented
-router.get('/laureates', (req, res) => { })
+router.get('/laureates', (req, res) => {
+    Prize.getLaureates()
+        .then(data => {
+            res.status(200)
+            res.jsonp(new APIResponse({
+                request: "Get all laureates",
+                message: "Laureates retrieved",
+                status: 200
+            }, data));
+        })
+        .catch(error => {
+            let json = new APIResponse({
+                request: "Get all laureates",
+                message: "An error occured in the database",
+                status: 500,
+            }, []);
+            json.Request.Error = error;
+            res.status(500)
+            res.jsonp(json)
+        })
+})
 
 module.exports = router;
